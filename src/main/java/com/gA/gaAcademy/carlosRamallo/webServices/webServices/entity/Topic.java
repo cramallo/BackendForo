@@ -1,6 +1,8 @@
 package com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,7 @@ public class Topic {
 	
 	@Column(name="author")
 	private int author;
+		
 	
 	public Topic(){}
 

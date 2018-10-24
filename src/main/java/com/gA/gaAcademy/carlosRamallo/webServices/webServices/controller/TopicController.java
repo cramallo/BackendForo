@@ -1,11 +1,15 @@
 package com.gA.gaAcademy.carlosRamallo.webServices.webServices.controller;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity.Reply;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity.Topic;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.service.TopicService;
 
@@ -21,10 +25,20 @@ public class TopicController {
 		return returnTopic;
 	}
 	
-	@GetMapping("/topic")
-	public Topic getTopic(@RequestParam int id) {
-		Topic topic=topicService.getTopic(id);
-		return topic;
-	}
+	@GetMapping("/topic/{id}")
+	public Optional<Topic> getTopic(@PathVariable int id) {
+		return topicService.getTopic(id);		
+	}	
 	
+	@GetMapping("/topic")
+	public List<Topic> getTopics(){		
+		return topicService.getTopics();
+	}	
+	
+	@PostMapping("/topic/{idTopic}/replay")
+	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {
+		
+		return null;
+	}
+		
 }
