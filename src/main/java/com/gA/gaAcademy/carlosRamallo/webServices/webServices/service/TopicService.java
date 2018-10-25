@@ -19,18 +19,34 @@ public class TopicService {
 	@Autowired
 	ReplyRepository replyRepository;
 
-	public Topic createTopic(Topic inputTopic) {
-		
-		Topic t=topicRepository.save(inputTopic);		
+	public Topic createTopic(Topic inputTopic) {		
+		Topic t=topicRepository.save(inputTopic);	
 		return t;
 	}
 	
-	public Optional<Topic> getTopic(int id) {		
-		return topicRepository.findById(id);		
+	public Topic getTopic(int id) {		
+		return topicRepository.findById(id).get();		
 	}	
 	
 	public List<Topic> getTopics(){
 		return topicRepository.findAll();		
+	}
+	
+	public Topic updateTopic(int id,Topic topic) {		
+		Topic t=topicRepository.findById(id).get();
+		if(topic.getAuthor()>0) {
+			t.setAuthor(topic.getAuthor());
+		}
+		
+		if(topic.getTitle()!=null) {
+			t.setTitle(topic.getTitle());	
+		}
+			
+		if(topic.getDescription()!=null) {
+			t.setDescription(topic.getDescription());	
+		}
+		
+		return topicRepository.save(t);		
 	}
 	
 	/*public List<Reply> getReplies(int id){

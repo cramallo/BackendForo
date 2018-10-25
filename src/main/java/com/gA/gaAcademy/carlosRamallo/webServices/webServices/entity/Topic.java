@@ -4,17 +4,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Topic {
 	
 	@Id
 	@GeneratedValue
-	private int id;	
+	private int topicId;	
 	
 	@Column(name="title")
 	private String title;
@@ -27,22 +33,33 @@ public class Topic {
 	
 	@Column(name="author")
 	private int author;
-		
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy="replyId",cascade=CascadeType.ALL)
+	private List<Reply>replies;
 	
 	public Topic(){}
 
-	public Topic(String title, Date datePost, String description, int author) {
+	public Topic(String title,String description, int author) {
 		super();
 		this.title = title;
-		this.datePost = datePost;
+		Date d= new Date();
+		this.datePost = d;
 		this.description = description;
 		this.author = author;
-	}
+	}	
 
 	public int getId() {
-		return id;
+		return topicId;
 	}
 
+	public List<Reply> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Reply> replies) {
+		this.replies = replies;
+	}
 
 	public String getTitle() {
 		return title;

@@ -10,11 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Reply {
 	@Id 
 	@GeneratedValue
-	private int id;
+	private int replyId;
 	
 	@Column
 	private int author;
@@ -24,22 +26,25 @@ public class Reply {
 	private Date datePost;
 	@Column
 	private int parentId;
-
-	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(name="id",nullable=false)
+	
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="topicId")
 	private Topic topic;	
 	
 	public Reply() {}
 
-	public Reply(int author, String descripcion, Date datePost) {
+	public Reply(int author, String descripcion, Date datePost,Topic topic) {
 		super();
 		this.author = author;
 		this.description = descripcion;
-		this.datePost = datePost;
+		Date d= new Date();
+		this.datePost = d;
+		this.topic=topic;
 	}
 
 	public int getId() {
-		return id;
+		return replyId;
 	}
 
 	public int getAuthor() {
@@ -64,6 +69,14 @@ public class Reply {
 
 	public void setDatePost(Date datePost) {
 		this.datePost = datePost;
-	}	
+	}
+
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}		
 
 }

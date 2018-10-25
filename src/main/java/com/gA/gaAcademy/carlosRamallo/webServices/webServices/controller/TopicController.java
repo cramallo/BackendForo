@@ -3,9 +3,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +28,7 @@ public class TopicController {
 	}
 	
 	@GetMapping("/topic/{id}")
-	public Optional<Topic> getTopic(@PathVariable int id) {
+	public Topic getTopic(@PathVariable int id) {
 		return topicService.getTopic(id);		
 	}	
 	
@@ -35,10 +37,15 @@ public class TopicController {
 		return topicService.getTopics();
 	}	
 	
+	@PutMapping("/topic/{id}")
+	public Topic setTopic(@PathVariable int id,@RequestBody Topic topic){			
+		return topicService.updateTopic(id, topic);		
+	}
+	
 	@PostMapping("/topic/{idTopic}/replay")
-	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {
-		
+	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {		
 		return null;
 	}
+	
 		
 }
