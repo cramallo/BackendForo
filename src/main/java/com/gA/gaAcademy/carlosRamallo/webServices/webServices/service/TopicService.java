@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity.Reply;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity.Topic;
+import com.gA.gaAcademy.carlosRamallo.webServices.webServices.expceptions.ResourceNotFoundException;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.repository.ReplyRepository;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.repository.TopicRepository;
 
@@ -47,6 +48,30 @@ public class TopicService {
 		}
 		
 		return topicRepository.save(t);		
+	}
+
+	public Reply createReply(int idTopic, Reply reply) {
+		return topicRepository.findById(idTopic).map(topic->{
+			reply.setTopic(topic);
+			return replyRepository.save(reply);
+		}).orElseThrow(()->new ResourceNotFoundException("No se encontro el topic"));				
+	}
+
+	public int deleteTopic(int id) {		
+		topicRepository.deleteById(id);		
+		return id;		
+	}
+
+	public int logicDeleteTopic(int id) {
+		// TODO Auto-generated method stub}
+		Topic t=topicRepository.findById(id).get();
+		if(!t.isDeleted()) {
+			t.delete();
+			topicRepository.save(t);
+			return t.getId();
+		}else {
+			return 0;
+		}		
 	}
 	
 	/*public List<Reply> getReplies(int id){

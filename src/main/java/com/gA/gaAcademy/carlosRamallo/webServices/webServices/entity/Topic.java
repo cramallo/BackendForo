@@ -7,8 +7,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
@@ -20,7 +22,7 @@ public class Topic {
 	
 	@Id
 	@GeneratedValue
-	private int topicId;	
+	private int topic_id;	
 	
 	@Column(name="title")
 	private String title;
@@ -34,11 +36,14 @@ public class Topic {
 	@Column(name="author")
 	private int author;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy="replyId",cascade=CascadeType.ALL)
-	private List<Reply>replies;
+	@Column(name="deleted")
+	private boolean deleted=false;
 	
-	public Topic(){}
+	//@JsonManagedReference
+	@OneToMany(mappedBy="reply_id",cascade=CascadeType.ALL)		
+	private List<Reply>replies=new ArrayList<>();
+	
+	public Topic(){	}
 
 	public Topic(String title,String description, int author) {
 		super();
@@ -46,11 +51,11 @@ public class Topic {
 		Date d= new Date();
 		this.datePost = d;
 		this.description = description;
-		this.author = author;
+		this.author = author;		
 	}	
 
 	public int getId() {
-		return topicId;
+		return topic_id;
 	}
 
 	public List<Reply> getReplies() {
@@ -91,7 +96,15 @@ public class Topic {
 
 	public void setAuthor(int author) {
 		this.author = author;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void delete() {
+		this.deleted = false;
 	}	
 
-
+	
 }

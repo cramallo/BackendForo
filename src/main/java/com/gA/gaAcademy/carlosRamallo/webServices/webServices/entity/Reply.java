@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Reply {
 	@Id 
 	@GeneratedValue
-	private int replyId;
+	private int reply_id;
 	
 	@Column
 	private int author;
@@ -24,12 +24,13 @@ public class Reply {
 	private String description;
 	@Column
 	private Date datePost;
-	@Column
-	private int parentId;
+	/*@Column
+	private int topic_id;	*/
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="topicId")
+	//@JsonBackReference
+	/*@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="topic_id",nullable = false)*/
+	@ManyToOne
 	private Topic topic;	
 	
 	public Reply() {}
@@ -44,7 +45,7 @@ public class Reply {
 	}
 
 	public int getId() {
-		return replyId;
+		return reply_id;
 	}
 
 	public int getAuthor() {
@@ -79,4 +80,5 @@ public class Reply {
 		this.topic = topic;
 	}		
 
+	
 }
