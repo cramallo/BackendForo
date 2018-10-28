@@ -18,7 +18,9 @@ public class TopicService {
 	TopicRepository topicRepository;
 	
 	@Autowired
-	ReplyRepository replyRepository;
+	ReplyRepository replyRepository;	
+	
+	//Topic
 
 	public Topic createTopic(Topic inputTopic) {		
 		Topic t=topicRepository.save(inputTopic);	
@@ -49,18 +51,12 @@ public class TopicService {
 		
 		return topicRepository.save(t);		
 	}
-
-	public Reply createReply(int idTopic, Reply reply) {
-		return topicRepository.findById(idTopic).map(topic->{
-			reply.setTopic(topic);
-			return replyRepository.save(reply);
-		}).orElseThrow(()->new ResourceNotFoundException("No se encontro el topic"));				
-	}
-
+	
 	public int deleteTopic(int id) {		
 		topicRepository.deleteById(id);		
 		return id;		
 	}
+	
 
 	public int logicDeleteTopic(int id) {
 		// TODO Auto-generated method stub}
@@ -74,7 +70,25 @@ public class TopicService {
 		}		
 	}
 	
-	/*public List<Reply> getReplies(int id){
-		return replyRepository.findAllById(id);
-	}*/
+	
+	//Reply
+
+	public Reply createReply(int idTopic, Reply reply) {
+		return topicRepository.findById(idTopic).map(topic->{
+			reply.setTopic(topic);
+			return replyRepository.save(reply);
+		}).orElseThrow(()->new ResourceNotFoundException("No se encontro el topic"));				
+	}
+
+	
+	public Reply getReply(int id) {
+		return replyRepository.findById(id).get();
+	}
+	
+
+	public int deleteReply(int idReply) {		
+		replyRepository.deleteById(idReply);
+		return idReply;
+	}	
+	
 }

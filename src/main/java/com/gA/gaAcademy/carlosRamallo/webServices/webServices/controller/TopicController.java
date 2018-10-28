@@ -65,13 +65,18 @@ public class TopicController {
 			msg="No se pudo borrar";
 			return new ResponseEntity<String>(msg,HttpStatus.NOT_FOUND);
 		}		
-	}
-	
+	}	
 	
 	@PostMapping("/topic/{idTopic}/reply")
 	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {			
 		return topicService.createReply(idTopic,reply);
 	}
 	
+	@DeleteMapping("/topic/reply/{idReply}")		
+	public ResponseEntity<?> deleteReplay(@PathVariable int idReply){
+		int borrado=topicService.deleteReply(idReply);
+		String m="El reply: "+idReply+" fue borrado";
+		return new ResponseEntity<String>(m,HttpStatus.OK);
+	}	
 			
 }
