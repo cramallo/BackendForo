@@ -22,7 +22,7 @@ public class Topic {
 	
 	@Id
 	@GeneratedValue
-	private int topic_id;	
+	private int id;	
 	
 	@Column(name="title")
 	private String title;
@@ -39,8 +39,8 @@ public class Topic {
 	@Column(name="deleted")
 	private boolean deleted=false;
 	
-	//@JsonManagedReference
-	@OneToMany(mappedBy="reply_id",cascade=CascadeType.ALL)		
+	@JsonManagedReference
+	@OneToMany(mappedBy="topic",cascade=CascadeType.ALL)		
 	private List<Reply>replies=new ArrayList<>();
 	
 	public Topic(){	}
@@ -55,7 +55,7 @@ public class Topic {
 	}	
 
 	public int getId() {
-		return topic_id;
+		return id;
 	}
 
 	public List<Reply> getReplies() {
