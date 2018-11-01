@@ -67,10 +67,14 @@ public class TopicController {
 		}		
 	}	
 	
-	@PostMapping("/topic/{idTopic}/reply")
+	/*@PostMapping("/topic/{idTopic}/reply")
 	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {			
 		return topicService.createReply(idTopic,reply);
-	}
+	}*/
+	
+	public Reply createReply(@PathVariable int idTopic,@RequestBody Reply reply) {			
+		return topicService.createReply(reply);
+	}	
 	
 	@DeleteMapping("/topic/reply/{idReply}")		
 	public ResponseEntity<?> deleteReplay(@PathVariable int idReply){

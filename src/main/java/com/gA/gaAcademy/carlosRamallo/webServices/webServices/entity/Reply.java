@@ -2,6 +2,7 @@ package com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,13 +24,16 @@ public class Reply {
 	@Column
 	private String description;
 	@Column
-	private Date datePost;
+	private Date datePost;	
 	
-	
-	@JsonBackReference
+	/*@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="topic_id")
-	private Topic topic;	
+	private Topic topic;*/
+	
+	@JoinColumn(name="topic")
+	@ManyToOne(cascade=CascadeType.ALL) //hace refencia desde el lado de topic no desde este lado
+	private Topic topic;
 	
 	public Reply() {}
 

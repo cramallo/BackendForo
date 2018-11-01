@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Topic {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;	
 	
 	@Column(name="title")
@@ -39,9 +40,14 @@ public class Topic {
 	@Column(name="deleted")
 	private boolean deleted=false;
 	
+	/*
 	@JsonManagedReference
 	@OneToMany(mappedBy="topic",cascade=CascadeType.ALL)		
 	private List<Reply>replies=new ArrayList<>();
+	*/
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="topic",cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Reply>replies=new ArrayList<Reply>();
 	
 	public Topic(){	}
 
@@ -52,6 +58,16 @@ public class Topic {
 		this.datePost = d;
 		this.description = description;
 		this.author = author;		
+	}	
+	
+	public Topic(String title,String description, int author,List<Reply> replies) {
+		super();
+		this.title = title;
+		Date d= new Date();
+		this.datePost = d;
+		this.description = description;
+		this.author = author;		
+		this.replies=replies;
 	}	
 
 	public int getId() {
@@ -104,6 +120,10 @@ public class Topic {
 
 	public void delete() {
 		this.deleted = false;
+	}
+
+	public void deleteReplies() {
+		this.replies.clear();		
 	}	
 
 	
