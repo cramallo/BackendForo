@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.gA.gaAcademy.carlosRamallo.webServices.webServices.request.TopicRequest;
 
 @Entity
 public class Topic {
@@ -46,6 +47,7 @@ public class Topic {
 	private List<Reply>replies=new ArrayList<>();
 	*/
 	
+	@JsonManagedReference
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="topic",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<Reply>replies=new ArrayList<Reply>();
 	
@@ -69,6 +71,20 @@ public class Topic {
 		this.author = author;		
 		this.replies=replies;
 	}	
+	
+	public Topic(Topic t) {
+		this.title = t.getTitle();
+		this.datePost= new Date();		
+		this.description = t.getDescription();
+		this.author = t.getAuthor();	
+	}
+
+	public Topic(TopicRequest topic) {
+		this.title=topic.getTitle();
+		this.datePost=new Date();
+		this.description=topic.getDescription();
+		this.author=topic.getAuthor();
+	}
 
 	public int getId() {
 		return id;

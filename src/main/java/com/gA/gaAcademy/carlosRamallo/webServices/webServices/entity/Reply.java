@@ -31,6 +31,7 @@ public class Reply {
 	@JoinColumn(name="topic_id")
 	private Topic topic;*/
 	
+	@JsonBackReference
 	@JoinColumn(name="topic")
 	@ManyToOne(cascade=CascadeType.ALL) //hace refencia desde el lado de topic no desde este lado
 	private Topic topic;

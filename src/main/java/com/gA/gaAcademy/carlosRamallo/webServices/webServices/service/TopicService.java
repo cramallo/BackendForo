@@ -12,6 +12,8 @@ import com.gA.gaAcademy.carlosRamallo.webServices.webServices.entity.Topic;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.expceptions.ResourceNotFoundException;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.repository.ReplyRepository;
 import com.gA.gaAcademy.carlosRamallo.webServices.webServices.repository.TopicRepository;
+import com.gA.gaAcademy.carlosRamallo.webServices.webServices.request.TopicRequest;
+import com.gA.gaAcademy.carlosRamallo.webServices.webServices.response.ReplyResponse;
 
 @Service
 public class TopicService {
@@ -24,9 +26,9 @@ public class TopicService {
 	
 	//Topic
 
-	public Topic createTopic(Topic inputTopic) {		
-		Topic t=topicRepository.save(inputTopic);	
-		return t;
+	public Topic createTopic(TopicRequest topic) {
+		Topic t=new Topic(topic);
+		return topicRepository.save(t);			
 	}
 	
 	public Topic getTopic(int id) {		
@@ -37,7 +39,7 @@ public class TopicService {
 		return topicRepository.findAll();		
 	}
 	
-	public Topic updateTopic(int id,Topic topic) {		
+	public Topic updateTopic(int id,TopicRequest topic) {		
 		Topic t=topicRepository.findById(id).get();
 		if(topic.getAuthor()>0) {
 			t.setAuthor(topic.getAuthor());
@@ -73,14 +75,7 @@ public class TopicService {
 	}
 	
 	
-	//Reply
-
-	/*public Reply createReply(int idTopic, Reply reply) {
-		return topicRepository.findById(idTopic).map(topic->{
-			reply.setTopic(topic);
-			return replyRepository.save(reply);
-		}).orElseThrow(()->new ResourceNotFoundException("No se encontro el topic"));				
-	}*/
+	//Reply	
 	
 	public Reply createReply(Reply reply) {
 		reply.setDatePost(new Date());
@@ -91,8 +86,10 @@ public class TopicService {
 		return topicRepository.findById(id).get().getReplies();
 	}
 	
-	public List<Reply>getReplys(int id) throws NoSuchElementException{
-		return (List<Reply>) replyRepository.findByTopic(topicRepository.findById(id).get()).get();		
+	public ReplyResponse getReply(int id) {
+		Reply reply= replyRepository.findById(id).get();
+		ReplyResponse replyResponse=new ReplyResponse(reply);
+		return replyResponse;
 	}
 	
 	public void deleteAllReplies(int id) {
@@ -111,11 +108,6 @@ public class TopicService {
 		replyRepository.save(toUpdate);
 		return toUpdate;
 	}
-	
-	public Reply getReply(int id) {
-		return replyRepository.findById(id).get();
-	}
-	
 
 	public int deleteReply(int idReply) {		
 		replyRepository.deleteById(idReply);
